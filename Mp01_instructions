@@ -1,0 +1,21 @@
+Guess My Number (High-Low) Two Players Take Their Turn
+
+
+Create a program that will simulate the child's number guessing game with two players who will play against the computer. The program should have the following requirements:
+1. When the program is invoked the computer will pseudorandomly choose which player will go first.
+
+2. Play begins when the computer interface asks "Player Number". A player number (either 1 or 2) is entered from the keyboard. If a player enters their number at the keyboard and it is not their turn the computer will report back "You have to wait your turn" and return to the query "Player Number". If it is a player's turn the computer will query "Enter Your Guess". The player may either enter a guess or indicate a desire to pass the play to the other player by entering the word PASS at the prompt. If the player enters a guess the computer will report back that the guess is too high, too low or correct and return to the query "Player Number" and pass play to the other player.
+
+3. No player may pass two turns in a row, and cannot exceed more than three passes for the entire game. If the player chooses to pass the computer should report "You have passed X number of times, you have Y more times left" before returning the query "Player Number".
+
+4. The play progresses until one user provides a correct guess.
+
+5. The program must be written in C and must be able to be compiled and run on UISACAD (no exceptions) using the gcc compiler (do not use g++).
+
+6. A professional quality pseudocode document must be provided.
+
+7. The source for the C program must be commented using best professional effort and should contain elements of the pseudocode as comments.
+
+8. You will turn in a copy of the source code which will be compiled and tested and a copy of the pseudocode which represents your design. You will turn the project in by emailing the source code and the pseudocode in separate documents to Jack Reynolds (jreyn6@uis.edu). Both your pseudocode and c source file must contain a comment that includes your name. We'll post more on what I expect in pseudocode so relax, it will be simple and instructive.
+
+9. This project is worth a total of 25 points and you must turn the project in to get a grade. Failure to submit the project material will result in an incomplete for the class. One point will be deducted from the points available for the project for each calendar day the submissions are late. You must have both elements (the pseudocode and the source code), partial credit will not be given for one or the other.
