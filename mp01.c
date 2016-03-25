@@ -3,51 +3,42 @@
 #include <stdlib.h>
 #include <time.h>
 #include <string.h> 
+#include <assert.h>
 
 //Global Varibles
 int player_turn = 0;
 int random_target_number = 0;
 bool won = false;
 
-typedef struct
+//This is my structure for each player
+struct Player
 {
        int passes_left;
        bool justPassed;
-} Player;
+};
 
-Player p1;
-Player p2;
 
-//Methods from bottom
-void player_number();
-void set_random_player_turn();
-void set_random_target_number();
-bool player_takes_turn(Player* player);
-void change_player_turn();
- 
-int main()
+//The constructor for Player. Takes no args and sets to default values
+struct Player *Player_create()
 {
-   set_random_player_turn();
-   set_random_target_number();
+    struct Player *who = malloc(sizeof(struct Player));
+    assert(who != NULL);
 
-   printf("%d\n",player_turn );
-   printf("%d\n",random_target_number );
+    who->passes_left = 3;
+    who->justPassed = false;
 
-   while (!won){
-      change_player_turn();
-      printf("The Player Turn is :%d\n",player_turn);
-      player_number();
-      if (player_turn == 1){ //player 1's turn
-         won = player_takes_turn(&p1);
-      }
-      else { //player 2's turn
-         won = player_takes_turn(&p2);
-      }
-   }
-   
-
+    return who;
 }
 
+//To free up memory after completion
+void Player_destroy(struct Player *who)
+{
+    assert(who != NULL);
+
+    free(who);
+}
+
+//Promps the user for their player number to determine if its their turn
 void player_number(){
    bool flag = true;
    while (flag){
@@ -79,6 +70,9 @@ void set_random_target_number(){
    random_target_number = ( rand() % 1000 ) + 1;
 }
 
+
+//This method prompts the current player to enter their guess and prompts them if it
+// is too high, low, or correct
 bool guess_number(){
    bool flag = false;
 
@@ -99,7 +93,11 @@ bool guess_number(){
    return flag;
 }
 
-bool player_takes_turn(Player* player){
+
+//Prompts the user if they would like to pass. If they can pass their turn us over
+//If they can't they are told why and then directed to guess a number
+//If they do not pass they are prompted to guess a number
+bool player_takes_turn(struct Player* player){
    bool correct = false;
    //const char * yes = "y";
 
@@ -112,11 +110,22 @@ bool player_takes_turn(Player* player){
    if(strcmp(pass_input, "yes") == 0){
       //if string check if player passed last turn and if they have passes left
       if(player->passes_left > 0 && player->justPassed == false){
-         player->passes_left = player->passes_left - 1;
+         player->passes_left -= 1;
+         player->justPassed = true;
          printf("You have passed %d number of times, you have %d more times left\n", 3 - player->passes_left,player->passes_left);
       }
-      player->passes_left = player->passes_left - 1;
-      player->justPassed = true;
+      else{
+         if (player->passes_left <= 0) {
+            printf("You can't pass because you have %d passes left\n",player->passes_left);
+         }
+         else {
+            printf("You can't pass because you passed last turn\n");
+         }
+
+         correct = guess_number();
+         player->justPassed = false;
+      }
+      
    }
    else
    {
@@ -128,9 +137,41 @@ bool player_takes_turn(Player* player){
 
 }
 
+//changes turn to the next player
 void change_player_turn(){
    player_turn = player_turn +1;
    if (player_turn > 2){
       player_turn = 1;
    }
+}
+
+
+int main()
+{
+   struct Player *p1 = Player_create();
+   struct Player *p2 = Player_create();
+
+   set_random_player_turn();
+   set_random_target_number();
+
+
+   //printf("For debug purposes the target number is :%d\n",random_target_number );
+
+   while (!won){
+      change_player_turn();
+      printf("Its Player %d's Turn\n",player_turn);
+      player_number();
+      if (player_turn == 1){ //player 1's turn
+         won = player_takes_turn(p1);
+      }
+      else { //player 2's turn
+         won = player_takes_turn(p2);
+      }
+   }
+   
+   //free up memory
+   Player_destroy(p1);
+   Player_destroy(p2);
+
+   return 0;
 }
