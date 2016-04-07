@@ -1,0 +1,125 @@
+Nathan Davis
+nhdavis2
+
+Main Guessing Game
+	make player p1 by calling procedure Player_create
+	make player p2 by calling procedure Player_create
+
+	Call proceudure set_random_player_turn
+	Call proceudure set_random_target_number
+
+	while(no one has won)
+		call procedure change_player_turn
+		print whose turn it is
+		call procedure player_number
+		if (its player 1's turn)
+			call procedure player takes turn for p1
+			assign the output of procedure to varible called won
+		else (it must be player 2's turn)
+			call procedure player_takes_turn for p2
+			assign the output of procedure to varible called won
+
+	The game is over
+	free memory for p1
+	free memory for p2
+
+end main
+
+//The constructor for Player. Takes no args and sets to default values
+Procedure Player_create return object of Player type
+	intialize newPlayer and allocate memory to it
+	check newPlayer != 0
+	set newPlayer attribute passes_left to 3
+	set newPlayer attribute justPassed = false
+	return newPlayer
+end Player_create
+
+//This is my structure for each player
+Structure Player
+	has varible int passes_left;
+	has varible bool justPassed
+end structure Player
+
+//To free up memory after completion
+Procedure Player_destroy arguments (Player who)
+	check who not = null
+	free memory of who
+end Procedure Player_destroy
+
+//Promps the user for their player number to determine if its their turn
+Procedure player_number
+	intialize bool flag to true;
+	while flag is true loop
+		prompt for "Enter Player Number"
+		intalize int input
+		set input = to keyboard input
+
+		if input = player_turn
+			set flag to false
+		else
+			print "You have to wait your turn"
+End Procedure player_number
+
+//sets a random starting player
+proceudure set_random_player_turn
+	set player_turn to a random number 1-2
+end procedure set_random_player_turn
+
+//Sets random target number that the players are trying to guess to a number between
+// 1 and 1000
+procedure set_random_target_number
+	set random_target_number to a random number 1 - 1000
+end procdure set_random_target_number
+
+//This method prompts the current player to enter their guess and prompts them if it
+// is too high, low, or correct
+procedure guess_number returns bool
+	intalize bool flag to false
+	promt user for guess
+	intalize int input
+	set input to the user's input
+	if input is less than random_target_number
+		print "Your guess is too low"
+	else if input is greater than random_target_number
+		print "your guess is too high"
+	else
+		print "Your guess is correct"
+		set flag to true
+	return flag
+end procedure guess_number 
+
+//Prompts the user if they would like to pass. If they can pass their turn us over
+//If they can't they are told why and then directed to guess a number
+//If they do not pass they are prompted to guess a number
+//returns if their guess was correct
+Procedure player_takes_turn args (Player player) returns bool
+	intalized bool correct to false
+
+	print "Will you pass this turn?(yes,no)"
+	intialize sting pass_input and set equal to user's keyboard input
+	if pass_input equals yes
+		if player.passes_left > 0 and player.justPassed = false
+			decrement player.passes_left
+			set player.justPassed to true
+			print how pany times user as passed and number of passes left
+		else
+			if player.passes_left <= 0
+				print you can't pass because you have no passes left
+			else
+				print you can't pass because you just passed last turn
+
+		set corret to the retunr of procedure guess_number
+		set player.justPassed to false
+	else
+		set corret to the retunr of procedure guess_number
+		set player.justPassed to false
+	return correct
+end procedure player_takes_turn
+
+
+//changes turn to the next player
+procedure change_player_turn
+	increment player_turn by 1
+	if player_turn > 2
+		set player_turn to 1
+end procedure change_player_turn

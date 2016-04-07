@@ -5,6 +5,9 @@
 #include <string.h> 
 #include <assert.h>
 
+//Nathan Davis
+//nhdavis2
+
 //Global Varibles
 int player_turn = 0;
 int random_target_number = 0;
@@ -97,6 +100,7 @@ bool guess_number(){
 //Prompts the user if they would like to pass. If they can pass their turn us over
 //If they can't they are told why and then directed to guess a number
 //If they do not pass they are prompted to guess a number
+//returns if their guess was correct
 bool player_takes_turn(struct Player* player){
    bool correct = false;
    //const char * yes = "y";
